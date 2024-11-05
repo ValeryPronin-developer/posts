@@ -4,6 +4,7 @@ import {
     createBrowserRouter,
     RouterProvider
 } from "react-router-dom";
+import {Provider} from 'react-redux'
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
@@ -13,35 +14,36 @@ import {DetailPost} from "./pages/posts/detail";
 import {AddPost} from "./pages/posts/add";
 import {Auth} from "./pages/auth";
 import {Registration} from "./pages/registration";
+import {store} from './redux/store'
 
 const router = createBrowserRouter([
     {
         path: '/',
-        element: <Root />,
+        element: <Root/>,
         children: [
             {
                 index: true,
-                element: <App />
+                element: <App/>
             },
             {
                 path: 'posts',
-                element: <Posts />,
+                element: <Posts/>,
             },
             {
                 path: 'posts/:id',
-                element: <DetailPost />
+                element: <DetailPost/>
             },
             {
                 path: 'posts/add',
-                element: <AddPost />
+                element: <AddPost/>
             },
             {
                 path: 'auth',
-                element: <Auth />
+                element: <Auth/>
             },
             {
                 path: 'registration',
-                element: <Registration />
+                element: <Registration/>
             },
         ]
     }
@@ -49,9 +51,11 @@ const router = createBrowserRouter([
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
-    <RouterProvider router={router} />
-  </React.StrictMode>
+    <React.StrictMode>
+        <Provider store={store}>
+            <RouterProvider router={router}/>
+        </Provider>
+    </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function
