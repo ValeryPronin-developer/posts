@@ -1,3 +1,3 @@
 import React from 'react';
 
-export const Auth = () => <>Auth!!!</>
+export const AuthPage = () => <>Auth!!!</>

@@ -1,3 +1,3 @@
 import React from 'react';
 
-export const EditPost = () => <>Edit!!!</>
+export const EditPostPage = () => <>Edit!!!</>

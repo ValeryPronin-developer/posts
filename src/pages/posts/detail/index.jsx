@@ -1,3 +1,3 @@
 import React from 'react';
 
-export const DetailPost = () => <>Detail!!!</>
+export const DetailPostPage = () => <>Detail!!!</>
