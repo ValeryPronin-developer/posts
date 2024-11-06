@@ -1,30 +1,38 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Posts} from "../../components/Posts";
 import {Container} from "../../components/Container";
 import {Typo} from "../../components/Typo";
+import {useDispatch, useSelector} from "react-redux";
+import {getFreshPosts} from "../../redux/slices/postsSlices";
 
-const INITIAL_POSTS = [
-    {
-        id: 1,
-        title: "Post 1",
-        image: 'https://cs13.pikabu.ru/post_img/big/2023/09/15/0/1694727354146680749.jpg'
-    },
-    {
-        id: 2,
-        title: "Post 2",
-        image: 'https://cs13.pikabu.ru/post_img/big/2023/09/15/0/1694727354146680749.jpg'
-    },
-    {
-        id: 3,
-        title: "Post 3",
-        image: 'https://cs13.pikabu.ru/post_img/big/2023/09/15/0/1694727354146680749.jpg'
-    },
-]
+export const MainPage = () => {
+    const dispatch = useDispatch()
 
-export const MainPage = () =>
-    <>
+    const postForView = useSelector((state) => state.posts.postForView)
+    const freshPosts = useSelector(state => state.posts.freshPosts)
+
+    useEffect(() => {
+        dispatch(getFreshPosts())
+    }, [])
+
+    if (!freshPosts) {
+        return <>Loading...</>
+    }
+
+    return (
         <Container>
-            <Typo>Свежие публикации</Typo>
-            <Posts posts={INITIAL_POSTS}/>
+            {freshPosts &&
+                <>
+                    <Typo>Свежие публикации</Typo>
+                    <Posts posts={freshPosts}/>
+                </>
+            }
+            {postForView &&
+                <>
+                    <Typo>Последний просмотренный пост</Typo>
+                    <Posts posts={[postForView]}/>
+                </>
+            }
         </Container>
-    </>
+    )
+}
