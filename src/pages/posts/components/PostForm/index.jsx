@@ -2,14 +2,11 @@ import React, {useState} from 'react'
 import {Container} from "../../../../components/Container";
 import * as SC from './styles'
 import {Typo} from "../../../../components/Typo";
-import {useDispatch} from "react-redux";
-import {addPost} from "../../../../redux/slices/postsSlices";
 
 const DEFAULT_VALUES = {title:'', body: ''}
 
-export const PostForm = () => {
-    const dispatch = useDispatch()
-    const [formValues, setFormValues] = useState(DEFAULT_VALUES)
+export const PostForm = ({ title, onSubmitForm, defaultValues }) => {
+    const [formValues, setFormValues] = useState(defaultValues || DEFAULT_VALUES)
 
     const onChange = (name, value) => {
         setFormValues({...formValues, [name]: value})
@@ -17,21 +14,21 @@ export const PostForm = () => {
 
     const onSubmit = (e) => {
         e.preventDefault()
-        dispatch(addPost(formValues))
-        setFormValues(DEFAULT_VALUES)
+        onSubmitForm(formValues)
+        !defaultValues && setFormValues(DEFAULT_VALUES)
     }
 
     const disabled = !formValues.title || !formValues.body
     return (
         <Container>
-            <Typo>Добавление нового поста</Typo>
+            <Typo>{title}</Typo>
             <SC.Form onSubmit={onSubmit}>
                 <SC.Field>
                     <SC.Input
                         type="text"
                         name="title"
                         value={formValues.title}
-                        placeholder='Заголовок поста'
+                        placeholder='Заголовок'
                         onChange={(e) => onChange(e.target.name, e.target.value)}
                     />
                 </SC.Field>
