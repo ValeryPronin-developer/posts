@@ -15,6 +15,7 @@ import {AddPostPage} from "./pages/posts/add";
 import {AuthPage} from "./pages/auth";
 import {RegistrationPage} from "./pages/registration";
 import {store} from './redux/store/store'
+import {EditPostPage} from "./pages/posts/edit";
 
 const router = createBrowserRouter([
     {
@@ -36,6 +37,10 @@ const router = createBrowserRouter([
             {
                 path: 'posts/add',
                 element: <AddPostPage/>
+            },
+            {
+                path: 'posts/:id/edit',
+                element: <EditPostPage />
             },
             {
                 path: 'auth',
