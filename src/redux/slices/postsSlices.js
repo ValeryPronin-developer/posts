@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
-import {postsAPI} from "../../components/api/postsAPI";
+import {postsAPI} from "../../api/postsAPI";
 
 const initialState = {
     posts: {
