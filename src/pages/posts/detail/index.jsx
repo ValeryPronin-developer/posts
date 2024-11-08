@@ -6,6 +6,8 @@ import * as SC from './styles'
 import {Link} from "../../../components/ui/Link";
 import {useDispatch, useSelector} from "react-redux";
 import {deletePost, getPostById, showPost} from "../../../redux/slices/postsSlices";
+import {Button} from "../../../components/ui/Button";
+import {Modal} from "../../../components/ui/Modal";
 
 export const DetailPostPage = () => {
     const {id} = useParams()
@@ -15,7 +17,7 @@ export const DetailPostPage = () => {
 
     const {list} = useSelector((state) => state.posts.posts)
     const postForView = useSelector((state) => state.posts.postForView)
-    const { user } = useSelector((state) => state.auth)
+    const {user} = useSelector((state) => state.auth)
 
     const [postForDelete, setPostForDelete] = useState(null)
 
@@ -54,15 +56,13 @@ export const DetailPostPage = () => {
 
     return (
         <Container>
-            {postForDelete && <SC.ModalWrapper>
-                <SC.Modal>
-                    <SC.ModalText>Вы точно уверены, что хотите удалить публикацию c ID - {postForDelete.id}?</SC.ModalText>
-                    <SC.ModalContent>
-                        <SC.DeleteButton onClick={onDeletePost}>Да</SC.DeleteButton>
-                        <SC.Button onClick={() => setPostForDelete(null)}>Нет</SC.Button>
-                    </SC.ModalContent>
-                </SC.Modal>
-            </SC.ModalWrapper>}
+            {postForDelete &&
+                <Modal
+                    text={`Вы точно уверены, что хотите удалить публикацию с ID - ${postForDelete?.id}?`}
+                    onConfirm={onDeletePost}
+                    onCancel={() => setPostForDelete(null)}
+                />
+            }
             <Typo>{post.title}</Typo>
             <SC.Image src={image} alt={post.title}/>
             <SC.Text>{post.body}</SC.Text>
@@ -70,7 +70,7 @@ export const DetailPostPage = () => {
             <SC.LinkWrapper>
                 <Link to='/posts'>Обратно к публикациям</Link>
                 {showEditAndDeleteBtn && <Link to={`/posts/${post.id}/edit`}>Редактировать</Link>}
-                {showEditAndDeleteBtn && <SC.DeleteButton onClick={() => setPostForDelete(post)}>Удалить</SC.DeleteButton>}
+                {showEditAndDeleteBtn && <Button $isDelete onClick={() => setPostForDelete(post)}>Удалить</Button>}
             </SC.LinkWrapper>
         </Container>
     )
