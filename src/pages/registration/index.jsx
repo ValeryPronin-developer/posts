@@ -37,7 +37,7 @@ export const RegistrationPage = () => {
 
             navigate('/auth')
         } catch (e) {
-
+            console.log(e)
         }
     }
 
