@@ -14,6 +14,10 @@ const initialState = {
         posts: null,
         loading: false,
     },
+    searchTerm: '',
+    sortOrder: 'asc',
+    currentPage: 1,
+    postsPerPage: 3,
 }
 
 export const getPostById = createAsyncThunk(
@@ -65,11 +69,25 @@ export const postsSlice = createSlice({
         deletePost: (state, action) => {
             state.posts.list = state.posts.list.filter((post) => post.id !== action.payload.id)
 
+            if (state.freshPosts.posts) {
+                state.freshPosts.posts = state.freshPosts.posts.filter((post) => post.id !== action.payload.id);
+            }
+
             state.postForView = {
                 post: null,
                 loading: false,
             }
-        }
+        },
+        setSearchTerm: (state, action) => {
+            state.searchTerm = action.payload;
+            state.currentPage = 1
+        },
+        setSortOrder: (state, action) => {
+            state.sortOrder = action.payload
+        },
+        setCurrentPage: (state, action) => {
+            state.currentPage = action.payload
+        },
     },
     extraReducers: (builder) => {
         builder.addCase(getPostById.pending, (state, action) => {
@@ -111,6 +129,6 @@ export const postsSlice = createSlice({
     }
 })
 
-export const {editPost, addPost, showPost, deletePost} = postsSlice.actions
+export const {editPost, addPost, showPost, deletePost, setSearchTerm , setSortOrder, setCurrentPage} = postsSlice.actions
 
 export default postsSlice.reducer
