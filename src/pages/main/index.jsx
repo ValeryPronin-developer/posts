@@ -9,11 +9,13 @@ export const MainPage = () => {
     const dispatch = useDispatch()
 
     const {post} = useSelector((state) => state.posts.postForView)
-    const { posts, loading} = useSelector(state => state.posts.freshPosts)
+    const { posts, loading} = useSelector((state) => state.posts.freshPosts)
 
     useEffect(() => {
-        dispatch(getFreshPosts())
-    }, [dispatch])
+        if (!posts) {
+            dispatch(getFreshPosts())
+        }
+    }, [dispatch, posts])
 
     return (
         <Container>
