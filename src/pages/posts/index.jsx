@@ -8,6 +8,8 @@ import {Pagination} from "./components/Pagination";
 import {Sort} from "./components/Sort";
 import {Search} from "./components/Search";
 import * as SC from './styles'
+import {Loading} from "../../components/ui/Loading";
+
 
 
 export const PostsPage = () => {
@@ -22,7 +24,9 @@ export const PostsPage = () => {
     }, [list, dispatch])
 
     if (!list && loading) {
-        return <Container>Loading...</Container>
+        return <Container>
+            <Loading />
+        </Container>
     }
 
     if (!list) {
