@@ -11,6 +11,7 @@ import * as SC from './styles'
 import {Loading} from "../../components/ui/Loading";
 
 
+
 export const PostsPage = () => {
     const {list, loading} = useSelector((state) => state.posts.posts)
     const {searchTerm, sortOrder, currentPage, postsPerPage} = useSelector((state) => state.posts)
@@ -24,7 +25,7 @@ export const PostsPage = () => {
 
     if (!list && loading) {
         return <Container>
-            <Loading/>
+            <Loading />
         </Container>
     }
 
@@ -53,8 +54,7 @@ export const PostsPage = () => {
                 <Sort onSortChange={(order) => dispatch(setSortOrder(order))}/>
             </SC.ControlsContainer>
             <Posts posts={paginatedPosts}/>
-            <Pagination currentPage={currentPage} onPageChange={(page) => dispatch(setCurrentPage(page))}
-                        totalPages={totalPages}/>
+            <Pagination currentPage={currentPage} onPageChange={(page) => dispatch(setCurrentPage(page))} totalPages={totalPages}/>
         </Container>
     )
 }
