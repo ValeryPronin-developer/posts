@@ -8,6 +8,7 @@ import {Pagination} from "./components/Pagination";
 import {Sort} from "./components/Sort";
 import {Search} from "./components/Search";
 import * as SC from './styles'
+import {Loading} from "../../components/ui/Loading";
 
 
 export const PostsPage = () => {
@@ -22,7 +23,9 @@ export const PostsPage = () => {
     }, [list, dispatch])
 
     if (!list && loading) {
-        return <Container>Loading...</Container>
+        return <Container>
+            <Loading/>
+        </Container>
     }
 
     if (!list) {
@@ -50,7 +53,8 @@ export const PostsPage = () => {
                 <Sort onSortChange={(order) => dispatch(setSortOrder(order))}/>
             </SC.ControlsContainer>
             <Posts posts={paginatedPosts}/>
-            <Pagination currentPage={currentPage} onPageChange={(page) => dispatch(setCurrentPage(page))} totalPages={totalPages}/>
+            <Pagination currentPage={currentPage} onPageChange={(page) => dispatch(setCurrentPage(page))}
+                        totalPages={totalPages}/>
         </Container>
     )
 }
