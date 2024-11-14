@@ -2,8 +2,10 @@ import styled from 'styled-components';
 
 export const Pagination = styled.div`
     display: flex;
-    justify-content: center;
+    //justify-content: center; 
+    margin-left: 33%;
     gap: 10px;
+    margin-bottom: 20px;
 `
 
 export const PaginationBtn = styled.button`

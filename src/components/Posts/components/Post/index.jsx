@@ -7,7 +7,7 @@ export const Post = ({post}) => {
     return (
         <SC.Post>
             <SC.Image src={image} alt={post.title}/>
-            <SC.Title>{post.title}</SC.Title>
+            <SC.Title>{post.title} - {post.id}</SC.Title>
             <Link to={`/posts/${post.id}`}>Читать далее...</Link>
         </SC.Post>
     )

@@ -5,6 +5,12 @@ const initialState = {
     posts: {
         list: null,
         loading: false,
+        currentPage: 1,
+        totalPages: 1,
+        limit: 10,
+        sortBy: 'id',
+        order: 'desc',
+        search: ''
     },
     postForView: {
         post: null,
@@ -14,10 +20,6 @@ const initialState = {
         posts: null,
         loading: false,
     },
-    searchTerm: '',
-    sortOrder: 'asc',
-    currentPage: 1,
-    postsPerPage: 3,
 }
 
 export const getPostById = createAsyncThunk(
@@ -29,8 +31,12 @@ export const getPostById = createAsyncThunk(
 
 export const getPosts = createAsyncThunk(
     'posts/fetchPosts',
-    async () => {
-        return await postsAPI.fetchPosts()
+    async ({page = 1, limit = 10, sortBy = 'id', order = 'desc', search = ''}) => {
+        const { posts, totalCount } = await postsAPI.fetchPosts(page, limit, sortBy, order, search)
+        return {
+            posts,
+            totalPages: Math.ceil(totalCount / limit),
+        }
     }
 )
 
@@ -78,16 +84,16 @@ export const postsSlice = createSlice({
                 loading: false,
             }
         },
-        setSearchTerm: (state, action) => {
-            state.searchTerm = action.payload;
-            state.currentPage = 1
+        setPage: (state, action) => {
+            state.posts.currentPage = action.payload
         },
-        setSortOrder: (state, action) => {
-            state.sortOrder = action.payload
+        setSort: (state, action) => {
+            state.posts.sortBy = action.payload.sortBy
+            state.posts.order = action.payload.order
         },
-        setCurrentPage: (state, action) => {
-            state.currentPage = action.payload
-        },
+        setSearch: (state, action) => {
+            state.posts.search = action.payload
+        }
     },
     extraReducers: (builder) => {
         builder.addCase(getPostById.pending, (state, action) => {
@@ -103,16 +109,16 @@ export const postsSlice = createSlice({
             }
         })
         builder.addCase(getPosts.pending, (state, action) => {
-            state.posts = {
-                list: null,
-                loading: true,
-            }
+            state.posts.loading = true
         })
         builder.addCase(getPosts.fulfilled, (state, action) => {
-            state.posts = {
-                list: action.payload,
-                loading: false,
-            }
+            state.posts.list = action.payload.posts
+            state.posts.loading = false
+            state.posts.totalPages = action.payload.totalPages
+            // state.posts.currentPage = state.posts.currentPage
+            // state.posts.sortBy = state.posts.sortBy
+            // state.posts.order = state.posts.order
+            // state.posts.search = state.posts.search
         })
         builder.addCase(getFreshPosts.pending, (state, action) => {
             state.freshPosts = {
@@ -129,6 +135,6 @@ export const postsSlice = createSlice({
     }
 })
 
-export const {editPost, addPost, showPost, deletePost, setSearchTerm , setSortOrder, setCurrentPage} = postsSlice.actions
+export const {editPost, addPost, showPost, deletePost, setPage, setSort, setSearch} = postsSlice.actions
 
 export default postsSlice.reducer
