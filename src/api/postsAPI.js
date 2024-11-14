@@ -1,9 +1,14 @@
 export const postsAPI = {
-    fetchPosts() {
+    fetchPosts(page, limit, sortBy = 'id', order = 'desc', search = '') {
         try {
-            return fetch(`https://jsonplaceholder.typicode.com/posts?_sort=id&_order=desc&_limit=10`)
-                .then((response) => response.json())
-                .then((posts) => posts)
+            return fetch(`https://jsonplaceholder.typicode.com/posts?_sort=${sortBy}&_order=${order}&_page=${page}&_per_page=${limit}&q=${search}`)
+                .then((response) => {
+                    const totalCount = response.headers.get('X-Total-Count')
+                    return response.json().then((posts) => ({
+                        posts,
+                        totalCount: totalCount
+                    }))
+                })
         } catch (ex) {
             console.log(ex)
         }
