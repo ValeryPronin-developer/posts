@@ -10,7 +10,9 @@ const initialState = {
         limit: 10,
         sortBy: 'id',
         order: 'desc',
-        search: ''
+        search: '',
+        addPost: [],
+        removePost: [],
     },
     postForView: {
         post: null,
@@ -64,6 +66,7 @@ export const postsSlice = createSlice({
             const newPost = {...action.payload}
 
             newPost.id = new Date().getTime()
+            state.posts.addPost.push(newPost)
             state.posts.list = state.posts.list ? [newPost, ...state.posts.list] : [newPost]
         },
         showPost: (state, action) => {
@@ -74,6 +77,7 @@ export const postsSlice = createSlice({
         },
         deletePost: (state, action) => {
             state.posts.list = state.posts.list.filter((post) => post.id !== action.payload.id)
+            state.posts.removePost.push(action.payload.id)
 
             if (state.freshPosts.posts) {
                 state.freshPosts.posts = state.freshPosts.posts.filter((post) => post.id !== action.payload.id);
@@ -112,13 +116,15 @@ export const postsSlice = createSlice({
             state.posts.loading = true
         })
         builder.addCase(getPosts.fulfilled, (state, action) => {
-            state.posts.list = action.payload.posts
+            const serverPosts = action.payload.posts
+
+            const filteredPosts = serverPosts.filter(
+                (post) => !state.posts.removePost.includes(post.id)
+            )
+
+            state.posts.list = [...state.posts.addPost, ...filteredPosts]
             state.posts.loading = false
             state.posts.totalPages = action.payload.totalPages
-            // state.posts.currentPage = state.posts.currentPage
-            // state.posts.sortBy = state.posts.sortBy
-            // state.posts.order = state.posts.order
-            // state.posts.search = state.posts.search
         })
         builder.addCase(getFreshPosts.pending, (state, action) => {
             state.freshPosts = {
