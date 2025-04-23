@@ -17,6 +17,7 @@
     "use-debounce": "^10.0.4",
     "web-vitals": "^2.1.4"
   },
+  "homepage": "https://yourusername.github.io/posts",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
